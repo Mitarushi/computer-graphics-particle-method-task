@@ -34,17 +34,17 @@ particleSizePanel.style.color = 'white';
 uiRoot.appendChild(particleSizePanel);
 
 const gravityPanel = document.createElement('div');
-gravityPanel.innerHTML = 'Gravity: <input type="number" id="gravityInput" value="1.0" step="0.1" min="0" max="20">';
+gravityPanel.innerHTML = 'Gravity: <input type="number" id="gravityInput" value="0.1" step="0.1" min="0" max="20">';
 gravityPanel.style.color = 'white';
 uiRoot.appendChild(gravityPanel);
 
 const pressureStiffnessPanel = document.createElement('div');
-pressureStiffnessPanel.innerHTML = 'Pressure Stiffness: <input type="number" id="pressureStiffnessInput" value="1000.0" step="0.1" min="0" max="1000">';
+pressureStiffnessPanel.innerHTML = 'Pressure Stiffness: <input type="number" id="pressureStiffnessInput" value="200.0" step="0.1" min="0" max="1000">';
 pressureStiffnessPanel.style.color = 'white';
 uiRoot.appendChild(pressureStiffnessPanel);
 
 const visocityPanel = document.createElement('div');
-visocityPanel.innerHTML = 'Viscosity: <input type="number" id="visocityInput" value="0.001" step="0.001" min="0" max="1">';
+visocityPanel.innerHTML = 'Viscosity: <input type="number" id="visocityInput" value="0.001" step="0.01" min="0" max="1">';
 visocityPanel.style.color = 'white';
 uiRoot.appendChild(visocityPanel);
 

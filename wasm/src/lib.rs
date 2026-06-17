@@ -3,7 +3,7 @@ use std::f32::consts::PI;
 use wasm_bindgen::prelude::*;
 
 const M: f32 = 1.0;
-const R_E: f32 = 2.5;
+const R_E: f32 = 3.0;
 // const G: f32 = 1.0;
 // const K: f32 = 1000.0;
 // const MU: f32 = 0.001;
@@ -129,7 +129,7 @@ impl SimSolver {
             wall_poly6_table: SimSolver::integrate_wall_table(|x, d| {
                 SimSolver::w_poly6(x) * x * (x - d)
             }),
-            wall_spiky_table: SimSolver::integrate_wall_table(|x, _d| SimSolver::w_spiky(x) * x),
+            wall_spiky_table: SimSolver::integrate_wall_table(|x, d| 0.5 * SimSolver::w_spiky(x) * (x * x - d * d)),
             wall_visc_table: SimSolver::integrate_wall_table(|x, d| {
                 SimSolver::w_visc(x) * x * (x - d)
             }),
@@ -357,7 +357,7 @@ impl SimSolver {
         self.compute_rho();
 
         for (i, p) in self.pos_buf.iter().enumerate() {
-            let (d, _wall_norm) = self.get_nearest_wall(p);
+            let (d, wall_norm) = self.get_nearest_wall(p);
             let mut a = Vec3 {
                 x: 0.0,
                 y: -self.gravity,
@@ -366,14 +366,14 @@ impl SimSolver {
             let press_i = (self.p_stiff * (self.rho[i] - self.rho0)).max(0.0);
             let qd = d / self.particle_size;
 
-            // a = a.add(&wall_norm.mul(
-            //     M * (press_i / self.rho[i].powi(2) + press_i / self.rho0.powi(2))
-            //         * self.wall_press(qd)
-            //         / self.particle_size,
-            // ));
-            a = a.add(&self.vel_buf[i].mul(
-                -M * self.visocity / self.rho0 * self.wall_visc(qd) / self.particle_size.powi(2),
+            a = a.add(&wall_norm.mul(
+                M * (press_i / self.rho[i].powi(2) + press_i / self.rho0.powi(2))
+                    * self.wall_press(qd)
+                    / self.particle_size,
             ));
+            // a = a.add(&self.vel_buf[i].mul(
+            //     -M * self.visocity / self.rho0 * self.wall_visc(qd) / self.particle_size.powi(2),
+            // ));
 
             for (j, q) in self.local_iter(p).map(|idx| (idx, self.pos_buf[idx])) {
                 if i == j {
