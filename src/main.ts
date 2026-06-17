@@ -44,7 +44,7 @@ pressureStiffnessPanel.style.color = 'white';
 uiRoot.appendChild(pressureStiffnessPanel);
 
 const visocityPanel = document.createElement('div');
-visocityPanel.innerHTML = 'Viscosity: <input type="number" id="visocityInput" value="0.001" step="0.01" min="0" max="1">';
+visocityPanel.innerHTML = 'Viscosity: <input type="number" id="visocityInput" value="0.01" step="0.001" min="0" max="1">';
 visocityPanel.style.color = 'white';
 uiRoot.appendChild(visocityPanel);
 
